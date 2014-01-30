@@ -1,0 +1,288 @@
+@model IEnumerable<MVC4KnockoutPOC.Models.PersonInfo>
+@{
+    ViewBag.Title = "Home Page";
+}
+<section id="PersonInfoSection">
+    <table>
+        <tr>
+            <td>
+                <input type="text" id="fN" data-bind="value: firstName" />
+            </td>
+            <td>
+                <input type="text" id="lN" data-bind="value: lastName" />
+            </td>
+            <td>
+                <label id="lblFirstName" data-bind="text: firstName">
+                </label>
+            </td>
+            <td>
+                @*Button below is using Unobtrusive javascript for event binding using Knockout library*@
+                <input type="button" class="btn btn-primary" value="Get Persons" data-bind="click: GetPersons" />
+                @*<input type="button" class="btn btn-primary" value="Get Persons" data-bind="click: function(){$root.GetPersons('loadingIcon');} " />*@
+            </td>
+        </tr>
+    </table>
+    <h4>
+        KO computed</h4>
+    <a class="smallipopStatic" title="Doesn't move an inch">Hover me! </a>
+    <table>
+        <tr>
+            <td>
+                <input type="text" id="Num1" data-bind="value: NUM1" />
+            </td>
+            <td>
+                <input type="text" id="Num2" data-bind="value: NUM2" />
+            </td>
+            <td>
+                <label id="lblTotal" data-bind="text: ComputedSUM">
+                </label>
+            </td>
+        </tr>
+    </table>
+    <h4>
+        KO template table</h4>
+    <table width="100%">
+        <tr>
+            <td style="width: 100%">
+                <div id="parentDiv" style="overflow-x: auto; overflow-y: auto; width: 800px; height: 150px">
+                    @*Absolute position of loading div (below) allows to position the "..loading icon" anywhere in the "parentDiv" using "left" & "top"*@
+                    <div id="loadingIcon" style="display: none; text-align: center; vertical-align: middle;
+                        position: absolute; top: 300px; left: 125px">
+                        ...loading
+                    </div>
+                    <table class="table table-striped" id="koTemplateTable" width="45%">
+                        <thead>
+                            <tr>
+                                <th>
+                                    First Name
+                                </th>
+                                <th>
+                                    Last Name
+                                </th>
+                                <th>
+                                    Address
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody id="koTbody" data-bind="template: { name: 'koPersonTemplate' , foreach: personInfoArray }">
+                        </tbody>
+                    </table>
+                </div>
+            </td>
+        </tr>
+    </table>
+</section>
+<h4>
+    KO Data-Binding with JSON in jQuery TABS</h4>
+<table width="100%">
+    <tr>
+        <td style="width: 100%">
+            <div id="tabs" style="width: 800px; height: 600px;">
+                <div id="searchLoadingIcon" style="display: none; text-align: center; vertical-align: middle;
+                    position: absolute; top: 350px; left: 250px">
+                    ...loading
+                </div>
+                <div id="popup" style="display: none; position: absolute; border-style: solid; background-color: white;
+                    padding: 5px;">
+                </div>
+                <ul>
+                    <li><a href="#tabs-1" id="projSearch">Project Search</a></li>
+                    <li><a href="#tabs-2" id="northProducts">Northwind Products</a></li>
+                    <li><a href="#tabs-3" id="TAPCTO">TAP CTO Listings</a></li>
+                </ul>
+                <div id="tabs-1" style="height: 500px; overflow-x: auto; overflow-y: auto;">
+                    <section id="PTSQuickSearchSection">
+                        <table>
+                            <tr>
+                                <td>
+                                    <div>
+                                        <label for="txtProjectId" class="control-label">
+                                            Project ID :</label>
+                                        <input type="text" class="form-control" id="txtProjectId" tabindex="1" />
+                                    </div>
+                                </td>
+                                <td>
+                                    <div>
+                                        <label for="txtProjectName" class="control-label">
+                                            Project Name :</label>
+                                        <input type="text" id="txtProjectName" tabindex="2" />
+                                    </div>
+                                </td>
+                                <td>
+                                    <div>
+                                        <label for="txtProjectName" class="control-label">
+                                            Project Manager :</label>
+                                        <input type="text" id="txtProjectMgr" tabindex="3" />
+                                    </div>
+                                </td>
+                            </tr>
+                        </table>
+                        <div>
+                            @*Use $root to pass any parameter to ViewModel functions*@ @*<input type="button" id="btnProjectSearch" data-bind="click: function(){$root.GetPTSProjectList('searchLoadingIcon');} "
+                                class="btn btn-primary" value="Search" />*@
+                            <input type="button" id="btnProjectSearch" data-bind="click: GetPTSProjectList" class="btn btn-primary"
+                                value="Search" />
+                        </div>
+                        <div style="overflow-x: hidden; overflow-y: auto; width: 750px">
+                            <table id="tblProjectList" class="table table-condensed table-hover table-bordered tablesorter">
+                                <thead>
+                                    <tr>
+                                        <th style="font-size: 12px; font-family: Verdana">
+                                            Project ID
+                                        </th>
+                                        <th style="font-size: 12px; font-family: Verdana">
+                                            Project Name
+                                        </th>
+                                        <th style="font-size: 12px; font-family: Verdana">
+                                            Project Manager
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody style="font-family: Verdana; font-size: 11px" id="projListTbody" data-bind="template {name: 'koProjListTemplate', foreach: projectListArray}">
+                                </tbody>
+                            </table>
+                        </div>
+                    </section>
+                </div>
+                <div id="tabs-2" style="height: 550px; overflow-x: auto; overflow-y: auto;">
+                    <section id="NorthwindSupplierProducts">
+                        <table>
+                            <tr>
+                                <td>
+                                    <input type="text" id="txtSupplierId" />
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <input type="button" id="btnGetProducts" data-bind="click: GetProductsForSupplier"
+                                        class="btn btn-primary" value="Get Products" />
+                                </td>
+                            </tr>
+                        </table>
+                        <div style="overflow-x: hidden; overflow-y: auto; width: 750px">
+                            <table id="tblSuppliers" class="table table-condensed table-hover table-bordered tablesorter">
+                                <thead>
+                                    <tr>
+                                        <th style="font-size: 12px; font-family: Verdana">
+                                            Supplier ID
+                                        </th>
+                                        <th style="font-size: 12px; font-family: Verdana">
+                                            Company Name
+                                        </th>
+                                        <th style="font-size: 12px; font-family: Verdana">
+                                            Contact Name
+                                        </th>
+                                        <th style="font-size: 12px; font-family: Verdana">
+                                            Contact Title
+                                        </th>
+                                        <th style="font-size: 12px; font-family: Verdana">
+                                            Address
+                                        </th>
+                                        <th style="font-size: 12px; font-family: Verdana">
+                                            City
+                                        </th>
+                                        <th style="font-size: 12px; font-family: Verdana">
+                                            Postal Code
+                                        </th>
+                                        <th style="font-size: 12px; font-family: Verdana">
+                                            Country
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody style="font-family: Verdana; font-size: 11px" id="suppliersTbody" data-bind="template {name: 'supplierTemplate', foreach: SupplierList}">
+                                </tbody>
+                            </table>
+                        </div>
+                        <br />
+                        <div style="overflow-x: hidden; overflow-y: auto; width: 750px">
+                            <table id="tblProductsForSupplier" class="table table-condensed table-hover table-bordered tablesorter">
+                                <thead>
+                                    <tr>
+                                        <th style="font-size: 12px; font-family: Verdana">
+                                            Product ID
+                                        </th>
+                                        <th style="font-size: 12px; font-family: Verdana">
+                                            Product Name
+                                        </th>
+                                        <th style="font-size: 12px; font-family: Verdana">
+                                            Supplier ID
+                                        </th>
+                                        <th style="font-size: 12px; font-family: Verdana">
+                                            Category ID
+                                        </th>
+                                        <th style="font-size: 12px; font-family: Verdana">
+                                            Quantity Per Unit
+                                        </th>
+                                        <th style="font-size: 12px; font-family: Verdana">
+                                            Unit Price
+                                        </th>
+                                        <th style="font-size: 12px; font-family: Verdana">
+                                            Units In Stock
+                                        </th>
+                                        <th style="font-size: 12px; font-family: Verdana">
+                                            Units On Order
+                                        </th>
+                                        <th style="font-size: 12px; font-family: Verdana">
+                                            Reorder Level
+                                        </th>
+                                        <th style="font-size: 12px; font-family: Verdana">
+                                            Discontinued
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody style="font-family: Verdana; font-size: 11px" id="suppProductTbody" data-bind="template {name: 'productTemplate', foreach: ProductList}">
+                                </tbody>
+                            </table>
+                        </div>
+                    </section>
+                </div>
+                <div id="tabs-3" style="height: 550px; overflow-x: auto; overflow-y: auto;">
+                    <section id="TAP_CTO">
+                        <table>
+                            <tr>
+                                <td>
+                                    <input type="button" id="btnGetTAPCTO" data-bind="click: GetTAPCTO" class="btn btn-primary"
+                                        value="Get TAP CTO" />
+                                </td>
+                            </tr>
+                        </table>
+                        <div style="overflow-x: hidden; overflow-y: auto; width: 750px">
+                            <table id="tblTAPCTO" class="table table-condensed table-hover table-bordered tablesorter">
+                                <thead>
+                                    <tr>
+                                        <th style="font-size: 12px; font-family: Verdana">
+                                            TPRNbr
+                                        </th>
+                                        <th style="font-size: 12px; font-family: Verdana">
+                                            Project Name
+                                        </th>
+                                        <th style="font-size: 12px; font-family: Verdana">
+                                            LOB
+                                        </th>
+                                        <th style="font-size: 12px; font-family: Verdana">
+                                            Age
+                                        </th>
+                                        <th style="font-size: 12px; font-family: Verdana">
+                                            Design Charter
+                                        </th>
+                                        <th style="font-size: 12px; font-family: Verdana">
+                                            Survey Version
+                                        </th>
+                                        <th style="font-size: 12px; font-family: Verdana">
+                                            Phase
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody style="font-family: Verdana; font-size: 11px" id="TAPCTOTbody" data-bind="template {name: 'TAPCTOTemplate', foreach: TAPCTOArray}">
+                                </tbody>
+                            </table>
+                        </div>
+                    </section>
+                </div>
+            </div>
+        </td>
+    </tr>
+</table>
+@section Scripts{
+    <script src="../../Scripts/ViewModels/Index.js" type="text/javascript"></script>
+}
