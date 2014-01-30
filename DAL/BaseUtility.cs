@@ -82,12 +82,12 @@ namespace MVC4KnockoutPOC.DAL
             {
                 string connString = "";
 
-                if (!string.IsNullOrEmpty(ConnStringType) && ConnStringType.Equals("PTS"))
-                    connString = @"Data Source=PTSVMDBQA01\ZEUS_QA;User ID=PTS_WEB;password=NorthEast1;Initial Catalog=PMTDB;Connect Timeout=500;pooling='true';Max Pool Size=30;Application Name=PTSW";
-                if (!string.IsNullOrEmpty(ConnStringType) && ConnStringType.Equals("TAP"))
-                    connString = "Data Source=169.185.151.91;User ID=sa;password=m0nk3y;Initial Catalog=UATMay11;Connect Timeout=500";
+                if (!string.IsNullOrEmpty(ConnStringType) && ConnStringType.Equals("<name>"))
+                    connString = @"<conn string>";
+                if (!string.IsNullOrEmpty(ConnStringType) && ConnStringType.Equals("<name>"))
+                    connString = @"<conn string>";
                 if (!string.IsNullOrEmpty(ConnStringType) && ConnStringType.Equals("Northwind"))
-                    connString = "Data Source=169.185.151.91;User ID=sa;password=m0nk3y;Initial Catalog=Northwind;timeout=200";
+                    connString = "Data Source=<ip>;User ID=sa;password=<pass>;Initial Catalog=Northwind;timeout=200";
 
                 return connString;
             }
