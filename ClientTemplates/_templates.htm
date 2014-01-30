@@ -1,0 +1,25 @@
+<script type="text/html" id="koPersonTemplate">
+        <tr>
+            <td data-bind="text: FirstName"></td>
+            <td data-bind="text: LastName"></td>
+            <td data-bind="text: Address"></td>
+        </tr>
+</script>
+<script type="text/html" id="koProjListTemplate">
+        <tr>
+            <td><a data-bind="text: proj_id, event : {mouseover: $parent.ShowPopUp}, style: {'text-decoration': 'underline'}" href="#" id="aProjId"></a></td>
+            <td data-bind="text: proj_name"></td>
+            <td data-bind="text: proj_mgr"></td>
+        </tr>
+</script>
+<script type="text/html" id="TAPCTOTemplate">
+        <tr>
+            <td data-bind="text: projectNumber"></td>
+            <td data-bind="text: projectName"></td>
+            <td data-bind="text: lob"></td>
+            <td data-bind="text: age"></td>
+            <td data-bind="text: designCharter"></td>
+            <td data-bind="text: surveyVersion"></td>
+            <td data-bind="text: phase"></td>
+        </tr>
+</script>
