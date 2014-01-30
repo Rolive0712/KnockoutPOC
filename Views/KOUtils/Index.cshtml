@@ -1,0 +1,94 @@
+@{
+    ViewBag.Title = "KOUtils";
+}
+<h2>
+    KO Mapping Utility</h2>
+<table width="100%">
+    <tr>
+        <td width="50%">
+            <section id="KOObservableBind">
+                <input type="button" class="btn btn-primary" data-bind="click: BindByObservables"
+                    value="Bind Person By observables" />
+                <div>
+                    <div>
+                        <span>FirstName: </span>
+                        <input type="text" data-bind="value: FirstName" />
+                    </div>
+                    <div>
+                        <span>LastName: </span>
+                        <input type="text" data-bind="value: LastName" />
+                    </div>
+                    <div>
+                        <span>Phone Number: </span>
+                        <input type="text" data-bind="value: PhoneNumber" />
+                    </div>
+                    <div>
+                        <span>SOEID: </span>
+                        <input type="text" data-bind="value: SOEID" />
+                    </div>
+                    <div>
+                        <span>GEID: </span>
+                        <input type="text" data-bind="value: GEID" />
+                    </div>
+                    <div>
+                        <span>LOB: </span>
+                        <input type="text" data-bind="value: LOB" />
+                    </div>
+                    <div>
+                        <span>Email: </span>
+                        <input type="text" data-bind="value: Email" />
+                    </div>
+                </div>
+            </section>
+        </td>
+        <td width="50%">
+            <section id="KOMappingBind">
+                <input type="button" id="btnKOMapping" class="btn btn-primary" value="Bind Person By KO Mapping Utility" />
+                <div>
+                    <div>
+                        <span>FirstName: </span>
+                        <input type="text" data-bind="value: FirstNm" />
+                        <span data-bind="text: FirstNm"></span>
+                    </div>
+                    <div>
+                        <span>LastName: </span>
+                        <input type="text" data-bind="value: LastNm" />
+                    </div>
+                    <div>
+                        <span>Phone Number: </span>
+                        <input type="text" data-bind="value: PhoneNbr" />
+                    </div>
+                    <div>
+                        <span>SOEID: </span>
+                        <input type="text" data-bind="value: SOEID" />
+                    </div>
+                    <div>
+                        <span>GEID: </span>
+                        <input type="text" data-bind="value: GEID" />
+                    </div>
+                    <div>
+                        <span>LOB: </span>
+                        <input type="text" data-bind="value: LOB" />
+                    </div>
+                    <div>
+                        <span>Email: </span>
+                        <input type="text" data-bind="value: EMail" />
+                    </div>
+                </div>
+            </section>
+        </td>
+    </tr>
+</table>
+@section scripts{
+    <script language="javascript" type="text/javascript">
+        (function () {
+            require(["bootstrapper"], function (bootstapper) {
+                require(["jquery"], function ($) {
+                    require(["ViewModels/KOMapping"]);
+                });
+            });
+        })();
+        
+    
+    </script>
+}
