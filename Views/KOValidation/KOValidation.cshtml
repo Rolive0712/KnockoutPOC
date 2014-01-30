@@ -1,0 +1,35 @@
+@{
+    ViewBag.Title = "Knockout Validation";
+}
+<h4>
+    Knockout Validation Sample</h4>
+<div>
+    <b>Customer Number: </b><span data-bind="text: CustomerID"></span>
+    <br />
+    <br />
+    <b>First Name: </b>
+    <input type="text" data-bind="value: FirstName" style="width: 200px" />
+    <br />
+    <br />
+    <b>Last Name: </b>
+    <input type="text" data-bind="value: LastName" style="width: 200px" />
+    <br />
+    <br />
+    <b>Age: </b>
+    <input type="text" data-bind="value: Age" style="width: 200px" />
+    <br />
+    <br />
+    <input type="checkbox" data-bind="checked: IsMale" /><b>Male</b><br />
+    <br />
+    <b>Country: </b>
+    <select data-bind="options: CountryOptions, optionsValue: 'CountryID', 
+          optionsText: 'Name', value:CountryID, optionsCaption:'-- Country --'">
+    </select>
+    <br />
+    <br />
+    <br />
+    <input type="button" data-bind="click: KnockoutDemoNamespace.addCustomer" value="Add Customer" />
+    <br />
+    <div id="message">
+    </div>
+</div>
