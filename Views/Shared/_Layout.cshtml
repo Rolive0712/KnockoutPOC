@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <title>@ViewBag.Title - My ASP.NET MVC Application</title>
+    <link href="~/favicon.ico" rel="shortcut icon" type="image/x-icon" />
+    <meta name="viewport" content="width=device-width" />
+    @Styles.Render("~/Content/css")
+    @Styles.Render("~/Content/jQueryUIcss")
+    @Styles.Render("~/Content/BootStrapCss")
+    @Styles.Render("~/Content/JqueryTableSorterCss")
+    @Styles.Render("~/Content/Toastr")
+    <link rel="stylesheet" href="../../Content/JQuery.smallipop/css/jquery.smallipop.css" type="text/css" media="all" title="Screen"/>
+    
+</head>
+<body>
+    <header>
+        <div class="content-wrapper">
+            <div class="float-left">
+                <p class="site-title">@Html.ActionLink("your logo here", "Index", "Home")</p>
+            </div>
+            <div class="float-right">
+                <section id="login">
+                        Hello, <span class="username">@User.Identity.Name</span>! @*windows auth*@
+                    </section>
+                <nav>
+                    <ul id="menu">
+                        <li>@Html.ActionLink("Home", "Index", "Home")</li>
+                        <li>@Html.ActionLink("Seat Reservations", "Index", "SeatReservation")</li>
+                        <li>@Html.ActionLink("KnockoutJS Validation", "Index", "KOValidation")</li>
+                        <li>@Html.ActionLink("Dapper TEST", "DapperTest", "Home")</li>
+                        <li>@Html.ActionLink("Knockout Utilities", "Index", "KOUtils")</li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </header>
+    <div id="body">
+        <section class="content-wrapper main-content clear-fix">
+            @RenderBody()
+        </section>
+    </div>
+    <script>        var App = {}; </script>
+    <script data-main="../../Scripts/bootstrapper" src="../../Scripts/Lib/require.js"
+        type="text/javascript"></script>
+    <script src="../../Scripts/Lib/modernizr-2.5.3.js" type="text/javascript"></script>
+    @RenderSection("scripts", required: false)
+</body>
+</html>
