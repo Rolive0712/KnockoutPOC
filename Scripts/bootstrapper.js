@@ -31,8 +31,7 @@ The below File structure Maintained for RequireJS module loading technique.
         waitSeconds: 60, //wait for 60 seconds to load file. else quit (default is 7)
         paths: {
             "jquery": "Lib/jquery-2.0.3.min",
-            //"knockout": "Lib/knockout-3.0.0.debug",
-            "knockout": "Lib/knockout-3.0.0",
+            "knockout": "Lib/knockout-3.0.0.debug",
             "komapping": "lib/knockout.mapping"
         },
         shim: {
@@ -42,8 +41,6 @@ The below File structure Maintained for RequireJS module loading technique.
             }
         }
     });
-
-    //require(["ViewModels/Index"]); //load my first script (if any).
 })();
 
 
