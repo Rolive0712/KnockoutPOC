@@ -17,21 +17,24 @@ ko.applyBindings(new ViewModel(), $('#PersonInfoSection')[0]);
 ko.applyBindings(new quickSearchViewModel(), $('#PTSQuickSearchSection')[0]);
 */
 
-$(function () { //jquery DOM ready event
-    var dependencies = [
-        "knockout",
-        "Lib/jquery.tablesorter.min",
-        "ViewModels/DataService",
-        "ViewModels/Logger",
-        "Lib/jquery.smallipop",
-    ];
+(function () { // SEAF => self invoking anonymous function
+    "use strict"; //allows strong typing in javascript
 
-    var App = App || {};
+    $(function () { //jquery DOM ready event
+        var dependencies = [
+            "knockout",
+            "Lib/jquery.tablesorter.min",
+            "ViewModels/DataService",
+            "ViewModels/Logger",
+            "Lib/jquery.smallipop",
+        ];
 
-    requirejs(dependencies, function (ko, sorter, dataservice, logger, smallipopup) {
+        var App = App || {};
 
-        //Initialise table sorter plugin
-        $('#tblProjectList').tablesorter(
+        requirejs(dependencies, function (ko, sorter, dataservice, logger, smallipopup) {
+
+            //Initialise table sorter plugin
+            $('#tblProjectList').tablesorter(
             {
                 headers: {
                     0: { sorter: "text" },
@@ -40,69 +43,71 @@ $(function () { //jquery DOM ready event
                 }
             });
 
-        App.quickSearchViewModel = function () {
-            var self = this;
-            self.projectListArray = ko.observableArray([]);
-            self.GetPTSProjectList = function () {
-                var PTSProject = {
-                    proj_id: $('#txtProjectId').val(),
-                    proj_name: $('#txtProjectName').val(),
-                    proj_mgr: $('#txtProjectMgr').val()
-                };
+            App.quickSearchViewModel = function () {
+                var self = this;
+                self.projectListArray = ko.observableArray([]);
+                self.GetPTSProjectList = function () {
+                    var PTSProject = {
+                        proj_id: $('#txtProjectId').val(),
+                        proj_name: $('#txtProjectName').val(),
+                        proj_mgr: $('#txtProjectMgr').val()
+                    };
 
-                $('#projListTbody').empty(); //clear the tbody of table before ajax request
-                var startDate = new Date();
+                    $('#projListTbody').empty(); //clear the tbody of table before ajax request
+                    var startDate = new Date();
 
-                /*****************USING MULTIPLE INLINE DEFERRED OBJECTS********************************/
+                    /*****************USING MULTIPLE INLINE DEFERRED OBJECTS********************************/
 
-                /*
-                1. EXECUTE BOTH DEFERRED PROMISES IN PARALLEL
-                2. This deferred will only resolve when both requests have completed.
-                3. With this approach, we have single failure callback for both deferred promises.
-                */
-                var deferredTemplates = dataservice.loadClientTemplates("koProjListTemplate", "../ClientTemplates/_templates.htm"),
+                    /*
+                    1. EXECUTE BOTH DEFERRED PROMISES IN PARALLEL
+                    2. This deferred will only resolve when both requests have completed.
+                    3. With this approach, we have single failure callback for both deferred promises.
+                    */
+                    var deferredTemplates = dataservice.loadClientTemplates("koProjListTemplate", "../ClientTemplates/_templates.htm"),
                         deferredPTSProjList = dataservice.GetPromise({
                             url: "../Home/GetPTSProjectList",
                             type: "POST",
                             data: JSON.stringify(PTSProject),
                             async: true
                         });
-                var deferredPromises = [deferredTemplates, deferredPTSProjList];
+                    var deferredPromises = [deferredTemplates, deferredPTSProjList];
 
-                $.when.apply($, deferredPromises).done(function (data1, projects) { //call with promise array
-                    //var projects = $.parseJSON(projects[2].responseText); //jQuery way
-                    var projects = ko.utils.parseJson(projects[2].responseText); // KO way
-                    self.projectListArray(projects);
-                    var endDate = new Date();
-                    var diff = (endDate.getTime() - startDate.getTime()) / 1000;
-                    logger.LogTimeDuration("Took " + diff + " secs to load " + projects.length + " records", "TIME");
+                    $.when.apply($, deferredPromises).done(function (data1, projects) { //call with promise array
+                        //var projects = $.parseJSON(projects[2].responseText); //jQuery way
+                        var projects = ko.utils.parseJson(projects[2].responseText); // KO way
+                        self.projectListArray(projects);
+                        var endDate = new Date();
+                        var diff = (endDate.getTime() - startDate.getTime()) / 1000;
+                        logger.LogTimeDuration("Took " + diff + " secs to load " + projects.length + " records", "TIME");
 
-                    $('#tblProjectList').trigger("update"); //trigger update on table for jQuery table Sorter to work correctly
+                        $('#tblProjectList').trigger("update"); //trigger update on table for jQuery table Sorter to work correctly
 
-                }).fail(function (jqXHR, textStatus, errorThrown) {
-                    logger.LogError(errorThrown + ":" + jqXHR.responseText, "ERROR");
-                });
+                    }).fail(function (jqXHR, textStatus, errorThrown) {
+                        logger.LogError(errorThrown + ":" + jqXHR.responseText, "ERROR");
+                    });
+                };
+
+                self.ShowPopUp = function (data, event) {
+                    //debugger;
+                    var message = "Project ID: " + data.proj_id + "\n Project Manager: " + data.proj_mgr + "\n Project Name: " + data.proj_name;
+                    //$('#aProjId').smallipop({}, message);
+                    $('#aProjId').attr('title', message);
+                    $('#aProjId').smallipop({
+                        theme: 'black',
+                        popupDistance: 0,
+                        popupYOffset: -14,
+                        popupAnimationSpeed: 100
+                    });
+                };
             };
 
-            self.ShowPopUp = function (data, event) {
-                //debugger;
-                var message = "Project ID: " + data.proj_id + "\n Project Manager: " + data.proj_mgr + "\n Project Name: " + data.proj_name;
-                //$('#aProjId').smallipop({}, message);
-                $('#aProjId').attr('title', message);
-                $('#aProjId').smallipop({
-                    theme: 'black',
-                    popupDistance: 0,
-                    popupYOffset: -14,
-                    popupAnimationSpeed: 100
-                });
-            };
-        };
+            ko.setTemplateEngine(ko.nativeTemplateEngine.instance);
+            ko.applyBindings(new App.quickSearchViewModel(), $('#PTSQuickSearchSection')[0]);
 
-        ko.setTemplateEngine(ko.nativeTemplateEngine.instance);
-        ko.applyBindings(new App.quickSearchViewModel(), $('#PTSQuickSearchSection')[0]);
+            $('#smallipopStatic').smallipop({}, 'hi dude');
 
-        $('#smallipopStatic').smallipop({}, 'hi dude');
+        });
 
     });
+})();
 
-});
