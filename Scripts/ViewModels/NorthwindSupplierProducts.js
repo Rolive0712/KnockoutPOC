@@ -58,23 +58,22 @@
                     var params = {
                         supplierId: $('#txtSupplierId').val()
                     };
+
                     var deferredTemplates = dataservice.loadClientTemplates("", "../ClientTemplates/_supplierProdTemplate.htm", "ALL"),
-                    deferredProdSupp = dataservice.GetPromise({
-                        url: "../Home/GetProductSupplierListFromNorthwind",
-                        type: "POST",
-                        data: JSON.stringify(params),
-                        async: true
-                    });
-                    var deferredPromises = [deferredTemplates, deferredProdSupp];
+                        deferredProdSupp = dataservice.GetPromise({
+                            url: "../Home/GetProductSupplierListFromNorthwind",
+                            type: "POST",
+                            data: JSON.stringify(params),
+                            async: true
+                        }),
+                        deferredPromises = [deferredTemplates, deferredProdSupp],
+                        defer = $.when.apply($, deferredPromises);
 
-                    $.when.apply($, deferredPromises).done(function (data1, prodSuppData) {
+                    defer.done(function (data1, prodSuppData) {
                         var list = ko.utils.parseJson(prodSuppData[2].responseText);    //KO way
-                        //var list = $.parseJSON(prodSuppData[2].responseText);         //jQuery way
-
                         self.ProductList(list.productList);
                         self.SupplierList(list.supplierList);
-
-                        //$('#tblSuppliers').trigger("update"); //not required here since we get one supplier only
+                            //$('#tblSuppliers').trigger("update"); //not required here since we get one supplier only
                         $('#suppProductTbody').trigger("update"); //trigger update on table for jQuery table Sorter to work
 
                     }).fail(function (jqXHR, textStatus, errorThrown) { // MVC Error Handler for jQuery async request failure
