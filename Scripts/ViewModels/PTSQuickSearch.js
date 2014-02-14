@@ -27,11 +27,12 @@ ko.applyBindings(new quickSearchViewModel(), $('#PTSQuickSearchSection')[0]);
             "ViewModels/DataService",
             "ViewModels/Logger",
             "Lib/jquery.smallipop",
+            "Lib/jquery.blockUI"
         ];
 
         var App = App || {};
 
-        requirejs(dependencies, function (ko, sorter, dataservice, logger, smallipopup) {
+        requirejs(dependencies, function (ko, sorter, dataservice, logger, smallipopup, blockUI) {
 
             //Initialise table sorter plugin
             $('#tblProjectList').tablesorter(
@@ -54,25 +55,31 @@ ko.applyBindings(new quickSearchViewModel(), $('#PTSQuickSearchSection')[0]);
                     };
 
                     $('#projListTbody').empty(); //clear the tbody of table before ajax request
-                    var startDate = new Date();
-
+                    
                     /*****************USING MULTIPLE INLINE DEFERRED OBJECTS********************************/
-
                     /*
                     1. EXECUTE BOTH DEFERRED PROMISES IN PARALLEL
                     2. This deferred will only resolve when both requests have completed.
                     3. With this approach, we have single failure callback for both deferred promises.
                     */
-                    var deferredTemplates = dataservice.loadClientTemplates("koProjListTemplate", "../ClientTemplates/_templates.htm"),
+
+                    var startDate = new Date(),
+                        deferredTemplates = dataservice.loadClientTemplates("koProjListTemplate", "../ClientTemplates/_templates.htm"),
                         deferredPTSProjList = dataservice.GetPromise({
                             url: "../Home/GetPTSProjectList",
                             type: "POST",
                             data: JSON.stringify(PTSProject),
                             async: true
-                        });
-                    var deferredPromises = [deferredTemplates, deferredPTSProjList];
+                        }),
+                        deferredPromises = [deferredTemplates, deferredPTSProjList],
+                        defer = $.when.apply($, deferredPromises);
 
-                    $.when.apply($, deferredPromises).done(function (data1, projects) { //call with promise array
+                    //element block ui and show progress
+                    $('div#tabs').block({
+                        message: 'loading...please wait'
+                    });
+
+                    defer.done(function (data1, projects) { //call with promise array
                         //var projects = $.parseJSON(projects[2].responseText); //jQuery way
                         var projects = ko.utils.parseJson(projects[2].responseText); // KO way
                         self.projectListArray(projects);
@@ -80,7 +87,9 @@ ko.applyBindings(new quickSearchViewModel(), $('#PTSQuickSearchSection')[0]);
                         var diff = (endDate.getTime() - startDate.getTime()) / 1000;
                         logger.LogTimeDuration("Took " + diff + " secs to load " + projects.length + " records", "TIME");
 
-                        $('#tblProjectList').trigger("update"); //trigger update on table for jQuery table Sorter to work correctly
+                        $('#tblProjectList').trigger("update"); //trigger update on table for jQuery table Sorter to work correctly.
+
+                        $('div#tabs').unblock();
 
                     }).fail(function (jqXHR, textStatus, errorThrown) {
                         logger.LogError(errorThrown + ":" + jqXHR.responseText, "ERROR");
@@ -103,6 +112,22 @@ ko.applyBindings(new quickSearchViewModel(), $('#PTSQuickSearchSection')[0]);
 
             ko.setTemplateEngine(ko.nativeTemplateEngine.instance);
             ko.applyBindings(new App.quickSearchViewModel(), $('#PTSQuickSearchSection')[0]);
+
+            //debugger;
+            //            $('#tblProjectList').fixheadertable({
+            //                //caption: 'Project Search',
+            //                //colratio: [100, 150, 150],
+            //                height: 500,
+            //                width: 800,
+            //                zebra: true//,
+            //                //sortable: true,
+            //                //sortedColId: 1,
+            //                //resizeCol: true,
+            //                //pager: true,
+            //                //rowsPerPage: 10,
+            //                //sortType: ['integer', 'string', 'string'],
+            //                //dateFormat: 'm/d/Y'
+            //            });
 
             $('#smallipopStatic').smallipop({}, 'hi dude');
 
