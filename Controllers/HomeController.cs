@@ -7,7 +7,11 @@ using MVC4KnockoutPOC.Models;
 namespace MVC4KnockoutPOC.Controllers
 {
     //[HandleError] //This captures Jquery AJAX errors. But displays contents in Error View as (HTML). Good for production
-    [CustomErrorHandler] //This captures Jquery AJAX. Displays exact error message and jquery fail callback is invoked. Good for debugging
+    /// <summary>
+    /// CustomErrorHandler: This captures Jquery AJAX. Displays exact error message and jquery fail callback is invoked. Good for debugging
+    /// If detailed error message is required, then comment "CustomErrorHandler".
+    /// </summary>
+    [CustomErrorHandler] 
     public class HomeController : Controller
     {
         private readonly IDataAccess da = new DataAccess();
@@ -47,7 +51,6 @@ namespace MVC4KnockoutPOC.Controllers
 
         public JsonResult GetPTSProjectList(PTSProject json)
         {
-            //var projListParams1 = Tuple.Create(json.proj_id, json.proj_name, json.proj_mgr);
             Tuple<string, string, string> projListParams = new Tuple<string, string, string>(
                 json.proj_id,
                 json.proj_name,
