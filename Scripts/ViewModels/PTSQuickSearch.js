@@ -55,7 +55,7 @@ ko.applyBindings(new quickSearchViewModel(), $('#PTSQuickSearchSection')[0]);
                     };
 
                     $('#projListTbody').empty(); //clear the tbody of table before ajax request
-                    
+
                     /*****************USING MULTIPLE INLINE DEFERRED OBJECTS********************************/
                     /*
                     1. EXECUTE BOTH DEFERRED PROMISES IN PARALLEL
@@ -81,18 +81,20 @@ ko.applyBindings(new quickSearchViewModel(), $('#PTSQuickSearchSection')[0]);
 
                     defer.done(function (data1, projects) { //call with promise array
                         //var projects = $.parseJSON(projects[2].responseText); //jQuery way
-                        var projects = ko.utils.parseJson(projects[2].responseText); // KO way
+                        var projects = ko.utils.parseJson(projects[2].responseText), // KO way
+                            endDate = new Date(),
+                            diff = (endDate.getTime() - startDate.getTime()) / 1000;
+
                         self.projectListArray(projects);
-                        var endDate = new Date();
-                        var diff = (endDate.getTime() - startDate.getTime()) / 1000;
                         logger.LogTimeDuration("Took " + diff + " secs to load " + projects.length + " records", "TIME");
 
                         $('#tblProjectList').trigger("update"); //trigger update on table for jQuery table Sorter to work correctly.
 
                         $('div#tabs').unblock();
 
-                    }).fail(function (jqXHR, textStatus, errorThrown) {
+                    }).fail(function (jqXHR, textStatus, errorThrown) { // single failure callback for multiple AJAX requests done in parallel
                         logger.LogError(errorThrown + ":" + jqXHR.responseText, "ERROR");
+                        $('div#tabs').unblock();
                     });
                 };
 
