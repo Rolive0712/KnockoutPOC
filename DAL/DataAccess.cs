@@ -46,7 +46,7 @@ namespace MVC4KnockoutPOC.DAL
                 // var dynamicParams = new DynamicParameters();
                 // dynamicParams.Add("@Id", 2, dbType: DbType.Int32, direction: ParameterDirection.Input);
 
-                //using (var multi = db.QueryMultiple("spSupplierProducts", dynamicParams, commandType: CommandType.StoredProcedure))
+                //using (var multi = db.QueryMultiple("<SP Name Here>", dynamicParams, commandType: CommandType.StoredProcedure))
                 using (var multi = db.QueryMultiple("spSupplierProducts",
                         new { Id = this.SupplierID }, commandType: CommandType.StoredProcedure))
                 {
@@ -65,7 +65,7 @@ namespace MVC4KnockoutPOC.DAL
             BaseUtility.ConnStringType = "PTS";
             using (var db = BaseUtility.OpenConnection())
             {
-                return db.Query<PTSProject>("sp_PMTGetProjList",
+                return db.Query<PTSProject>("<SP Name Here>",
                     new {   ProjId = projListParams.Item1, 
                             Projname = projListParams.Item2, 
                             ProjMgr = projListParams.Item3 }, 
@@ -79,7 +79,7 @@ namespace MVC4KnockoutPOC.DAL
             BaseUtility.ConnStringType = "TAP";
             using (var db = BaseUtility.OpenConnection())
             {
-                return db.Query<TAPEntity>("spCTOGridFill", commandType: CommandType.StoredProcedure).ToList();
+                return db.Query<TAPEntity>("<SP Name Here>", commandType: CommandType.StoredProcedure).ToList();
             }
         }
 
@@ -92,7 +92,7 @@ namespace MVC4KnockoutPOC.DAL
             BaseUtility.ConnStringType = "RiskMgmt";
             using (var db = BaseUtility.OpenConnection())
             {
-                return db.Query<dynamic>("usp_RiskIssuesDashBoard", new
+                return db.Query<dynamic>("<SP Name Here>", new
                        {
                            RIOwner = "0002730489",
                            RIStaff = 1,
