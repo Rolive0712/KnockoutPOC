@@ -64,9 +64,10 @@ ko.applyBindings(new quickSearchViewModel(), $('#PTSQuickSearchSection')[0]);
                     */
 
                     var startDate = new Date(),
-                        deferredTemplates = dataservice.loadClientTemplates("koProjListTemplate", "../ClientTemplates/_templates.htm"),
+                        url = URL.UrlSchemeAndAuthority + URL.ClientTemplate1,
+                        deferredTemplates = dataservice.loadClientTemplates("koProjListTemplate", url),
                         deferredPTSProjList = dataservice.GetPromise({
-                            url: "../Home/GetPTSProjectList",
+                            url: URL.PTSProjList,
                             type: "POST",
                             data: JSON.stringify(PTSProject),
                             async: true
@@ -99,9 +100,7 @@ ko.applyBindings(new quickSearchViewModel(), $('#PTSQuickSearchSection')[0]);
                 };
 
                 self.ShowPopUp = function (data, event) {
-                    //debugger;
                     var message = "Project ID: " + data.proj_id + "\n Project Manager: " + data.proj_mgr + "\n Project Name: " + data.proj_name;
-                    //$('#aProjId').smallipop({}, message);
                     $('#aProjId').attr('title', message);
                     $('#aProjId').smallipop({
                         theme: 'black',
@@ -114,24 +113,6 @@ ko.applyBindings(new quickSearchViewModel(), $('#PTSQuickSearchSection')[0]);
 
             ko.setTemplateEngine(ko.nativeTemplateEngine.instance);
             ko.applyBindings(new App.quickSearchViewModel(), $('#PTSQuickSearchSection')[0]);
-
-            //debugger;
-            //            $('#tblProjectList').fixheadertable({
-            //                //caption: 'Project Search',
-            //                //colratio: [100, 150, 150],
-            //                height: 500,
-            //                width: 800,
-            //                zebra: true//,
-            //                //sortable: true,
-            //                //sortedColId: 1,
-            //                //resizeCol: true,
-            //                //pager: true,
-            //                //rowsPerPage: 10,
-            //                //sortType: ['integer', 'string', 'string'],
-            //                //dateFormat: 'm/d/Y'
-            //            });
-
-            $('#smallipopStatic').smallipop({}, 'hi dude');
 
         });
 
