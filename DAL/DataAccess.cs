@@ -89,10 +89,18 @@ namespace MVC4KnockoutPOC.DAL
         /// <returns></returns>
         public IEnumerable<dynamic> CTOGridFillDynamic()
         {
-            BaseUtility.ConnStringType = "TAP";
+            BaseUtility.ConnStringType = "RiskMgmt";
             using (var db = BaseUtility.OpenConnection())
             {
-                return db.Query<dynamic>("spCTOGridFill", commandType: CommandType.StoredProcedure).ToList();
+                return db.Query<dynamic>("usp_RiskIssuesDashBoard", new
+                       {
+                           RIOwner = "0002730489",
+                           RIStaff = 1,
+                           RIDuedate = 1,
+                           RILogin = "0002730489"
+                       }, commandType: CommandType.StoredProcedure).ToList();
+
+             //   return db.Query<dynamic>("select * from StgGERSReview").ToList();
             }
         }
 
