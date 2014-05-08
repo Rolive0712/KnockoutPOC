@@ -21,23 +21,40 @@ The below File structure Maintained for RequireJS module loading technique.
 
 */
 
+
 (function () {
     //shim is required if knockout.mapping is used since it has knockout dependency
     //shim is required if underscore or amplify or komapping plugin is used and they are not AMD ready
     //Knockout parent library is AMD ready so no need to shim it.
 
     requirejs.config({
-        baseUrl: '/Scripts/',
+        baseUrl: URL.ScriptRoot,
         waitSeconds: 60, //wait for 60 seconds to load file. else quit (default is 7)
         paths: {
             "jquery": "Lib/jquery-2.0.3.min",
             "knockout": "Lib/knockout-3.0.0.debug",
-            "komapping": "lib/knockout.mapping"
+            "komapping": "lib/knockout.mapping",
+            "datatable": "Lib/jquery.dataTables-1.9.0",
+            "datatableplugin": "Lib/jquery.dataTables.plugins",
+            "koDatatables": "Lib/knockout-datatables"
         },
         shim: {
             komapping: {
                 deps: ['knockout'],
                 exports: 'komapping'
+            },
+            /*koSeries : {
+                deps: ['knockout'],
+                exports: 'koSeries'
+            }*/
+            //,
+            //            datatableplugin: {
+            //                deps: ['datatable'],
+            //                exports: 'datatableplugin'
+            //            },
+            koDatatables: {
+                deps: ['datatable','knockout'],
+                exports: 'koDatatables'
             }
         }
     });
