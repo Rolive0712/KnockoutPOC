@@ -34,9 +34,10 @@
                 self.GetPersons = function () {
                     $('#koTbody').empty();                          // clear the table tbody before binding
                     //USING MULTIPLE INLINE DEFERRED OBJECTS
-                    var deferredTemplates = dataservice.loadClientTemplates("koPersonTemplate", "../ClientTemplates/_templates.htm"),
+                    var url = URL.UrlSchemeAndAuthority + URL.ClientTemplate1,
+                        deferredTemplates = dataservice.loadClientTemplates("koPersonTemplate", url),
                                     deferredPersons = dataservice.GetPromise({
-                                        url: "../Home/GetPersons",
+                                        url: URL.GetPersons,
                                         type: "GET",
                                         data: null,
                                         async: true
