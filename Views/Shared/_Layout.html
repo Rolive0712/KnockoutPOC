@@ -8,10 +8,8 @@
     @Styles.Render("~/Content/css")
     @Styles.Render("~/Content/jQueryUIcss")
     @Styles.Render("~/Content/BootStrapCss")
-    @Styles.Render("~/Content/JqueryTableSorterCss")
+    @Styles.Render("~/Content/TableSorter/Bundle")
     @Styles.Render("~/Content/Toastr")
-    <link rel="stylesheet" href="../../Content/JQuery.smallipop/css/jquery.smallipop.css" type="text/css" media="all" title="Screen"/>
-    
 </head>
 <body>
     <header>
@@ -41,9 +39,24 @@
         </section>
     </div>
     <script>        var App = {}; </script>
-    <script data-main="../../Scripts/bootstrapper" src="../../Scripts/Lib/require.js"
+    <script type="text/javascript">
+        var URL = {
+            BaseURL : '@Url.Content("~/")',
+            ScriptRoot: '@Url.Content("~/Scripts/")',
+            UrlSchemeAndAuthority: '@HttpContext.Current.Request.Url.Scheme://@HttpContext.Current.Request.Url.Authority',
+            ClientTemplate1: '@Url.Content("~/ClientTemplates/_templates.htm")',
+            ClientTemplate2: '@Url.Content("~/ClientTemplates/_supplierProdTemplate.htm")',
+            PTSProjList: '@Url.Content("~/Home/GetPTSProjectList")',
+            BindDynamicTable: '@Url.Content("~/Home/BindDynamicTable")',
+            CTOGridFill : '@Url.Content("~/Home/CTOGridFill")',
+            GetProductSupplierListFromNorthwind : '@Url.Content("~/Home/GetProductSupplierListFromNorthwind")',
+            GetPersons : '@Url.Content("~/Home/GetPersons")'
+        };
+        
+    </script>
+    <script data-main="@Url.Content("~/Scripts/bootstrapper")" src="@Url.Content("~/Scripts/Lib/require.js")"
         type="text/javascript"></script>
-    <script src="../../Scripts/Lib/modernizr-2.5.3.js" type="text/javascript"></script>
+    <script src="@Url.Content("~/Scripts/Lib/modernizr-2.5.3.js")" type="text/javascript"></script>
     @RenderSection("scripts", required: false)
 </body>
 </html>
