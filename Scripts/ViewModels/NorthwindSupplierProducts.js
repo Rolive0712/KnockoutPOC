@@ -59,9 +59,10 @@
                         supplierId: $('#txtSupplierId').val()
                     };
 
-                    var deferredTemplates = dataservice.loadClientTemplates("", "../ClientTemplates/_supplierProdTemplate.htm", "ALL"),
+                    var url = URL.UrlSchemeAndAuthority + URL.ClientTemplate2,
+                        deferredTemplates = dataservice.loadClientTemplates("", url, "ALL"),
                         deferredProdSupp = dataservice.GetPromise({
-                            url: "../Home/GetProductSupplierListFromNorthwind",
+                            url: URL.GetProductSupplierListFromNorthwind,
                             type: "POST",
                             data: JSON.stringify(params),
                             async: true
@@ -76,7 +77,7 @@
                             //$('#tblSuppliers').trigger("update"); //not required here since we get one supplier only
                         $('#suppProductTbody').trigger("update"); //trigger update on table for jQuery table Sorter to work
 
-                    }).fail(function (jqXHR, textStatus, errorThrown) { // MVC Error Handler for jQuery async request failure
+                    }).fail(function (jqXHR, textStatus, errorThrown) { // single failure callback for multiple AJAX requests done in parallel
                         if (jqXHR.status === 500) {
                             if (typeof (jqXHR.responseText) === "string") {
                                 var json = ko.utils.parseJson(jqXHR.responseText);
