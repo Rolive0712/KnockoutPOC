@@ -77,7 +77,7 @@
 <table width="100%">
     <tr>
         <td style="width: 100%">
-            <div id="tabs" style="width: 800px; height: 600px;">
+            <div id="tabs" style="width: 100%; height: 600px;">
                 <div id="searchLoadingIcon" style="display: none; text-align: center; vertical-align: middle;
                     position: absolute; top: 350px; left: 250px">
                     ...loading
@@ -89,6 +89,7 @@
                     <li><a href="#tabs-1" id="projSearch">Project Search</a></li>
                     <li><a href="#tabs-2" id="northProducts">Northwind Products</a></li>
                     <li><a href="#tabs-3" id="TAPCTO">TAP CTO Listings</a></li>
+                    <li><a href="#tabs-4" id="Dynamic">Dynamic Data grid using KnockoutJS</a></li>
                 </ul>
                 <div id="tabs-1" style="height: 500px; overflow-x: auto; overflow-y: auto;">
                     <section id="PTSQuickSearchSection">
@@ -279,10 +280,48 @@
                         </div>
                     </section>
                 </div>
+
+                <div id="tabs-4" style="height: 550px; overflow-x: auto; overflow-y: auto;">
+                    <section id="dynamic">
+                        <table>
+                            <tr>
+                                <td>
+                                    <input type="button" id="btnDynamic" data-bind="click: BindDynamic" class="btn btn-primary"
+                                        value="Bind data to dynamic table" />
+                                </td>
+                            </tr>
+                        </table>
+                        <div style="overflow-x: auto; overflow-y: auto; width: 750px">
+                            
+                            <table id="tblDynamic" class="table table-condensed" 
+                                    data-bind="dataTable: {
+                                        dataSource: dynamicArray,
+	                                    iDisplayLength: 10,
+                                        sPaginationType: 'bootstrap',
+    	                                gridId: 'tblDynamic',
+	                                    sDom: 't<\'row\'<\'span12\'i><\'span12 paginateRight\'p>>'}">
+                            @*<table id="tblDynamic" class="table table-condensed tablesorter">*@
+                                <thead>
+                                    <tr data-bind="foreach: columnNames">
+                                        <th>
+                                            <span data-bind="text: $data"></span>
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody id="tbodyDynamic" data-bind="foreach: dynamicArray">
+                                    <tr data-bind="foreach: $parent.columnNames">
+                                        <td data-bind="text: $parent[$data]">
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </section>
+                </div>
             </div>
         </td>
     </tr>
 </table>
 @section Scripts{
-    <script src="../../Scripts/ViewModels/Index.js" type="text/javascript"></script>
+    <script src="@Url.Content("~/Scripts/ViewModels/Index.js")" type="text/javascript"></script>
 }
