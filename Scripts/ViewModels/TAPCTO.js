@@ -51,9 +51,10 @@
                     self.TAPCTOArray([]);   //reset the array. not required
 
                     /*****************USING MULTIPLE INLINE DEFERRED OBJECTS********************************/
-                    var deferredTemplates = dataservice.loadClientTemplates("TAPCTOTemplate", "../ClientTemplates/_templates.htm"),
+                    var url = URL.UrlSchemeAndAuthority + URL.ClientTemplate1,
+                    deferredTemplates = dataservice.loadClientTemplates("TAPCTOTemplate", url),
                                     deferredCTO = dataservice.GetPromise({
-                                        url: "../Home/CTOGridFill",
+                                        url: URL.CTOGridFill,
                                         type: "GET",
                                         data: null,
                                         async: true
