@@ -3,6 +3,10 @@ using System.Web.Mvc;
 using MVC4KnockoutPOC.DAL;
 using MVC4KnockoutPOC.ExceptionHandler;
 using MVC4KnockoutPOC.Models;
+using System.Linq;
+using Newtonsoft;
+using Newtonsoft.Json.Serialization;
+using Newtonsoft.Json;
 
 namespace MVC4KnockoutPOC.Controllers
 {
@@ -11,7 +15,7 @@ namespace MVC4KnockoutPOC.Controllers
     /// CustomErrorHandler: This captures Jquery AJAX. Displays exact error message and jquery fail callback is invoked. Good for debugging
     /// If detailed error message is required, then comment "CustomErrorHandler".
     /// </summary>
-    [CustomErrorHandler] 
+    [CustomErrorHandler]
     public class HomeController : Controller
     {
         private readonly IDataAccess da = new DataAccess();
@@ -61,8 +65,6 @@ namespace MVC4KnockoutPOC.Controllers
             return Json(iePi, JsonRequestBehavior.AllowGet);
         }
 
-       
-        
         public JsonResult GetProductSupplierListFromNorthwind(int? supplierId)
         {
             da.SupplierID = supplierId;
@@ -74,15 +76,19 @@ namespace MVC4KnockoutPOC.Controllers
         public JsonResult CTOGridFill()
         {
             var CTO = da.CTOGridFill();
-            //var CTO = da.CTOGridFillDynamic();
             return Json(CTO, JsonRequestBehavior.AllowGet);
+        }
+
+        public string BindDynamicTable()
+        {
+            dynamic dynamicData = da.CTOGridFillDynamic();
+            return JsonConvert.SerializeObject(dynamicData);
         }
 
         public void AddPerson(Person json)
         {
-            Tuple<string, string, string, string, string, string, string> personInfoList = 
-                new Tuple<string, string, string, string, string, string, string>(
-            json.FirstName, json.LastName, json.PhoneNumber, 
+            Tuple<string, string, string, string, string, string, string> personInfoList = new Tuple<string, string, string, string, string, string, string>(
+            json.FirstName, json.LastName, json.PhoneNumber,
             json.SOEID, json.RoleID, json.GEID, json.Email);
 
             da.AddPerson(personInfoList);
